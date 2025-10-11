@@ -1,11 +1,14 @@
 INSERT INTO roles (name) VALUES ('ROLE_CUSTOMER');
 INSERT INTO roles (name) VALUES ('ROLE_ADMIN');
 
-INSERT INTO users (username, password) VALUES ('admin1', '');
+INSERT INTO users (username, password) VALUES ('admin1', '$2a$10$wlPPkurmkLbNN97B2hZpKuWU0EGelPhCcbF0AHbIasnKpxpoCz.u2');
+INSERT INTO users (username, password) VALUES ('user1', '$2a$10$LZ7FsCozWmrUHYANYbR.7u/IaH7/pnY3KAnouCuW2kPeu2/Pzjg5m');
+INSERT INTO users (username, password) VALUES ('user2', '$2a$10$feeYi.3UrHpsmW/9Nsli/e8F6CEA2uF7MQM4lY00Q7nxOWtsImqsq');
 
 INSERT INTO user_roles (user_id, role_id) VALUES (1, 2);
+INSERT INTO user_roles (user_id, role_id) VALUES (2, 1);
+INSERT INTO user_roles (user_id, role_id) VALUES (3, 1);
 
--- Insert 30 products
 INSERT INTO products (name, category, price, image_url, description) VALUES
 ('手工陶瓷咖啡杯 Handmade Ceramic Coffee Mug', 'Home & Living', 680, 'https://source.unsplash.com/400x400/?ceramic,mug', '手工拉胚，每個杯子都有獨特紋理 | Handmade on the wheel, each mug has unique textures.'),
 ('日式竹編野餐籃 Japanese Bamboo Picnic Basket', 'Home & Living', 1280, 'https://source.unsplash.com/400x400/?picnic,basket', '純手工竹編，適合週末野餐 | Handwoven bamboo, perfect for weekend picnics.'),
@@ -37,3 +40,9 @@ INSERT INTO products (name, category, price, image_url, description) VALUES
 ('北歐極簡檯燈 Nordic Minimalist Lamp', 'Home & Living', 1980, 'https://source.unsplash.com/400x400/?lamp,minimalist', '柔和燈光，適合夜讀 | Soft lighting, perfect for night reading.'),
 ('旅行日記書 Travel Journal Book', 'Books', 600, 'https://source.unsplash.com/400x400/?journal,travel', '記錄旅程與心情的好夥伴 | Capture journeys and thoughts.'),
 ('手工布書套 Handmade Fabric Book Cover', 'Stationery', 450, 'https://source.unsplash.com/400x400/?bookcover,fabric', '保護書籍，也展現個人風格 | Protects books with artisanal style.');
+
+INSERT INTO cart_items (user_id, product_id, quantity)
+VALUES
+(2, 1, 2),
+(2, 3, 1),
+(2, 2, 4);

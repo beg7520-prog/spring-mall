@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS cart_items;
 
 CREATE TABLE roles (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -29,4 +30,17 @@ CREATE TABLE products (
     price DECIMAL(10,2),
     image_url VARCHAR(500),
     description TEXT
+);
+
+CREATE TABLE cart_items (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    quantity INT NOT NULL,
+
+    CONSTRAINT fk_cart_user FOREIGN KEY (user_id)
+        REFERENCES users(id) ON DELETE CASCADE,
+
+    CONSTRAINT fk_cart_product FOREIGN KEY (product_id)
+        REFERENCES products(id) ON DELETE CASCADE
 );
