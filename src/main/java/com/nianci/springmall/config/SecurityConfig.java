@@ -23,18 +23,34 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**","/api/products/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/products/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.getWriter().write("Unauthorized: Please login");
+                            response.setContentType("application/json");
+                            response.getWriter().write("""
+                        {
+                          "status": 401,
+                          "error": "Unauthorized",
+                          "message": "Please login first",
+                          "timestamp": "%s"
+                        }
+                        """.formatted(java.time.LocalDateTime.now()));
                         })
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                            response.getWriter().write("Forbidden: No permission");
+                            response.setContentType("application/json");
+                            response.getWriter().write("""
+                        {
+                          "status": 403,
+                          "error": "Forbidden",
+                          "message": "No permission to access this resource",
+                          "timestamp": "%s"
+                        }
+                        """.formatted(java.time.LocalDateTime.now()));
                         })
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
