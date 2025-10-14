@@ -18,7 +18,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/search")
-    public Page<Product> search(
+    public ResponseEntity<Page<Product>> search(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String category,
             @RequestParam(defaultValue = "0") int page,
@@ -30,7 +30,8 @@ public class ProductController {
                 : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        return productService.searchProducts(keyword, category, pageable);
+        Page<Product> result = productService.searchProducts(keyword, category, pageable);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")

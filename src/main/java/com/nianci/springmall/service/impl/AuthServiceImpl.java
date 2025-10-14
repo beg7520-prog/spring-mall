@@ -4,15 +4,15 @@ import com.nianci.springmall.dto.LoginRequest;
 import com.nianci.springmall.dto.RegisterRequest;
 import com.nianci.springmall.entity.Role;
 import com.nianci.springmall.entity.User;
+import com.nianci.springmall.exception.BadRequestException;
+import com.nianci.springmall.exception.ResourceNotFoundException;
 import com.nianci.springmall.repository.RoleRepository;
 import com.nianci.springmall.repository.UserRepository;
 import com.nianci.springmall.service.AuthService;
 import com.nianci.springmall.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,15 +26,15 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void register(RegisterRequest req) {
         if (userRepo.existsByUsername(req.getUsername())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exists");
+            throw new BadRequestException("Username already exists");
         }
+
+        Role customerRole = roleRepo.findByName("ROLE_CUSTOMER")
+                .orElseThrow(() -> new ResourceNotFoundException("ROLE_CUSTOMER not found"));
 
         User user = new User();
         user.setUsername(req.getUsername());
         user.setPassword(encoder.encode(req.getPassword()));
-
-        Role customerRole = roleRepo.findByName("ROLE_CUSTOMER")
-                .orElseThrow(() -> new RuntimeException("ROLE_CUSTOMER not found"));
         user.getRoles().add(customerRole);
 
         userRepo.save(user);
@@ -43,10 +43,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String login(LoginRequest req) {
         User user = userRepo.findByUsername(req.getUsername())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+                .orElseThrow(() -> new BadRequestException("Invalid credentials"));
 
         if (!encoder.matches(req.getPassword(), user.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid credentials");
+            throw new BadRequestException("Invalid credentials");
         }
 
         return jwtUtil.generateToken(user);
