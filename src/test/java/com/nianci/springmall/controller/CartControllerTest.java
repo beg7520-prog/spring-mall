@@ -67,7 +67,7 @@ public class CartControllerTest {
 
     @Transactional
     @Test
-    public void addToCart_success() throws Exception {
+    public void addToCart_newItem_returns201() throws Exception {
         String token = getJwtToken(mockMvc, objectMapper, "user1", "654321");
 
         CartItemRequest cartItemRequest = new CartItemRequest();
@@ -84,7 +84,7 @@ public class CartControllerTest {
                 .content(json);
 
         mockMvc.perform(requestBuilder)
-                .andExpect(status().isOk())
+                .andExpect(status().is(201))
                 .andExpect(jsonPath("$.productId", equalTo(4)))
                 .andExpect(jsonPath("$.productName", equalTo("原木書架 Wooden Bookshelf")))
                 .andExpect(jsonPath("$.price", equalTo(3200.0)))

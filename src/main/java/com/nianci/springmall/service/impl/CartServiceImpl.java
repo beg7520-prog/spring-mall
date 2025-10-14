@@ -4,6 +4,8 @@ import com.nianci.springmall.dto.CartItemResponse;
 import com.nianci.springmall.entity.CartItem;
 import com.nianci.springmall.entity.Product;
 import com.nianci.springmall.entity.User;
+import com.nianci.springmall.exception.BadRequestException;
+import com.nianci.springmall.exception.ResourceNotFoundException;
 import com.nianci.springmall.repository.CartRepository;
 import com.nianci.springmall.repository.ProductRepository;
 import com.nianci.springmall.repository.UserRepository;
@@ -24,7 +26,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<CartItemResponse> getCartByUsername(String username) {
         User user = userRepo.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         return cartRepo.findByUser(user)
                 .stream()
@@ -34,22 +36,26 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartItemResponse addToCart(String username, Long productId, int quantity) {
+        if (quantity <= 0) {
+            throw new BadRequestException("Quantity must be greater than 0");
+        }
+
         User user = userRepo.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Product product = productRepo.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         CartItem item = cartRepo.findByUserAndProduct(user, product)
-                .orElse(new CartItem());
+                .orElseGet(() -> {
+                    CartItem newItem = new CartItem();
+                    newItem.setUser(user);
+                    newItem.setProduct(product);
+                    newItem.setQuantity(0);
+                    return newItem;
+                });
 
-        if (item.getId() == null) {
-            item.setUser(user);
-            item.setProduct(product);
-            item.setQuantity(quantity);
-        } else {
-            item.setQuantity(item.getQuantity() + quantity);
-        }
+        item.setQuantity(item.getQuantity() + quantity);
 
         CartItem saved = cartRepo.save(item);
         return toDto(saved);
@@ -57,8 +63,13 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartItemResponse updateCartItem(Long cartItemId, int quantity) {
+        if (quantity <= 0) {
+            throw new BadRequestException("Quantity must be greater than 0");
+        }
+
         CartItem item = cartRepo.findById(cartItemId)
-                .orElseThrow(() -> new RuntimeException("Cart item not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cart item not found"));
+
         item.setQuantity(quantity);
         return toDto(cartRepo.save(item));
     }
@@ -66,6 +77,15 @@ public class CartServiceImpl implements CartService {
     @Override
     public void removeCartItem(Long cartItemId) {
         cartRepo.deleteById(cartItemId);
+    }
+
+    @Override
+    public boolean isNewCartItem(String username, Long productId) {
+        User user = userRepo.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        Product product = productRepo.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        return cartRepo.findByUserAndProduct(user, product).isEmpty();
     }
 
     private CartItemResponse toDto(CartItem item) {

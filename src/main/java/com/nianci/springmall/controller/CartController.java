@@ -25,10 +25,16 @@ public class CartController {
     }
 
     @PostMapping
-    public ResponseEntity<CartItemResponse> addToCart(@AuthenticationPrincipal String username,
-                                                      @RequestBody CartItemRequest request) {
-        CartItemResponse item = cartService.addToCart(username, request.getProductId(), request.getQuantity());
-        return ResponseEntity.ok(item);
+    public ResponseEntity<CartItemResponse> addToCart(
+            @AuthenticationPrincipal String username,
+            @RequestBody CartItemRequest request) {
+
+        boolean isNewItem = cartService.isNewCartItem(username, request.getProductId());
+        CartItemResponse response = cartService.addToCart(username, request.getProductId(), request.getQuantity());
+
+        return ResponseEntity
+                .status(isNewItem ? HttpStatus.CREATED : HttpStatus.OK)
+                .body(response);
     }
 
     @PutMapping("/{id}")

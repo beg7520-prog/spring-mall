@@ -9,4 +9,5 @@ public interface CartService {
     CartItemResponse addToCart(String username, Long productId, int quantity);
     CartItemResponse updateCartItem(Long cartItemId, int quantity);
     void removeCartItem(Long cartItemId);
+    boolean isNewCartItem(String username, Long productId);
 }
