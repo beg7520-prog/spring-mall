@@ -3,6 +3,7 @@ package com.nianci.springmall.controller;
 import com.nianci.springmall.dto.CartItemRequest;
 import com.nianci.springmall.dto.CartItemResponse;
 import com.nianci.springmall.service.CartService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,7 @@ public class CartController {
     @PostMapping
     public ResponseEntity<CartItemResponse> addToCart(
             @AuthenticationPrincipal String username,
-            @RequestBody CartItemRequest request) {
-
+            @RequestBody @Valid CartItemRequest request) {
         boolean isNewItem = cartService.isNewCartItem(username, request.getProductId());
         CartItemResponse response = cartService.addToCart(username, request.getProductId(), request.getQuantity());
 
@@ -39,7 +39,7 @@ public class CartController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CartItemResponse> updateCart(@PathVariable Long id,
-                                                       @RequestBody CartItemRequest request) {
+                                                       @RequestBody @Valid CartItemRequest request) {
         CartItemResponse updated = cartService.updateCartItem(id, request.getQuantity());
         return ResponseEntity.ok(updated);
     }

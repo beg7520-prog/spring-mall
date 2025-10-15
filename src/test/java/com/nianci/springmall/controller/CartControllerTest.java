@@ -71,7 +71,6 @@ public class CartControllerTest {
         String token = getJwtToken(mockMvc, objectMapper, "user1", "654321");
 
         CartItemRequest cartItemRequest = new CartItemRequest();
-        cartItemRequest.setUserId(2L);
         cartItemRequest.setProductId(4L);
         cartItemRequest.setQuantity(5);
 
@@ -88,8 +87,7 @@ public class CartControllerTest {
                 .andExpect(jsonPath("$.productId", equalTo(4)))
                 .andExpect(jsonPath("$.productName", equalTo("原木書架 Wooden Bookshelf")))
                 .andExpect(jsonPath("$.price", equalTo(3200.0)))
-                .andExpect(jsonPath("$.quantity", equalTo(5)))
-                .andExpect(jsonPath("$.subtotal", equalTo(16000.0)));
+                .andExpect(jsonPath("$.quantity", equalTo(5)));
     }
 
     @Transactional
@@ -98,7 +96,6 @@ public class CartControllerTest {
         String token = getJwtToken(mockMvc, objectMapper, "user1", "654321");
 
         CartItemRequest cartItemRequest = new CartItemRequest();
-        cartItemRequest.setUserId(2L);
         cartItemRequest.setProductId(3L);
         cartItemRequest.setQuantity(1);
 
@@ -115,8 +112,7 @@ public class CartControllerTest {
                 .andExpect(jsonPath("$.productId", equalTo(3)))
                 .andExpect(jsonPath("$.productName", equalTo("冷泡咖啡禮盒 Cold Brew Coffee Gift Set")))
                 .andExpect(jsonPath("$.price", equalTo(850.0)))
-                .andExpect(jsonPath("$.quantity", equalTo(2)))
-                .andExpect(jsonPath("$.subtotal", equalTo(1700.0)));
+                .andExpect(jsonPath("$.quantity", equalTo(2)));
     }
 
 
@@ -126,7 +122,6 @@ public class CartControllerTest {
         String token = getJwtToken(mockMvc, objectMapper, "user1", "654321");
 
         CartItemRequest cartItemRequest = new CartItemRequest();
-        cartItemRequest.setUserId(2L);
         cartItemRequest.setProductId(300L);
         cartItemRequest.setQuantity(1);
 
@@ -148,7 +143,6 @@ public class CartControllerTest {
         String token = getJwtToken(mockMvc, objectMapper, "user1", "654321");
 
         CartItemRequest cartItemRequest = new CartItemRequest();
-        cartItemRequest.setUserId(2L);
         cartItemRequest.setProductId(3L);
         cartItemRequest.setQuantity(2);
 
@@ -165,8 +159,7 @@ public class CartControllerTest {
                 .andExpect(jsonPath("$.productId", equalTo(3)))
                 .andExpect(jsonPath("$.productName", equalTo("冷泡咖啡禮盒 Cold Brew Coffee Gift Set")))
                 .andExpect(jsonPath("$.price", equalTo(850.0)))
-                .andExpect(jsonPath("$.quantity", equalTo(2)))
-                .andExpect(jsonPath("$.subtotal", equalTo(1700.0)));
+                .andExpect(jsonPath("$.quantity", equalTo(2)));
     }
 
     @Transactional
@@ -175,7 +168,6 @@ public class CartControllerTest {
         String token = getJwtToken(mockMvc, objectMapper, "user1", "654321");
 
         CartItemRequest cartItemRequest = new CartItemRequest();
-        cartItemRequest.setUserId(2L);
         cartItemRequest.setProductId(3L);
         cartItemRequest.setQuantity(2);
 

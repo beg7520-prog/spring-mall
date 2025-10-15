@@ -94,8 +94,7 @@ public class CartServiceImpl implements CartService {
                 item.getProduct().getId(),
                 item.getProduct().getName(),
                 item.getProduct().getPrice(),
-                item.getQuantity(),
-                item.getProduct().getPrice() * item.getQuantity()
+                item.getQuantity()
         );
     }
 }
