@@ -46,3 +46,10 @@ VALUES
 (2, 1, 2),
 (2, 3, 1),
 (2, 2, 4);
+
+INSERT INTO orders (user_id, total, status)
+VALUES (2, 2380, 'COMPLETED');
+
+INSERT INTO order_items (order_id, product_id, quantity, price)
+VALUES (1, 1, 1, 680),
+       (1, 3, 2, 1700);
