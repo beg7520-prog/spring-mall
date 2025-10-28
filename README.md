@@ -1,13 +1,13 @@
-# 🛒 Spring Mall — Spring Boot E-Commerce Demo
+# Spring Mall — Spring Boot E-Commerce Demo
 
 This is a **Spring Mall Demo project** built with **Spring Boot, Spring Security, JPA/MySQL**, and **JWT**.  
 It simulates a basic e-commerce workflow — from **user registration** to **order management**.
 
 ---
 
-## 🚀 Project Overview
+## Project Overview
 
-### 🎯 Purpose
+### Purpose
 Simulate a **small online shop workflow**, including:
 1. User registration & login (JWT authentication)
 2. Product listing, details, and search/filter
@@ -17,7 +17,7 @@ Simulate a **small online shop workflow**, including:
 
 ---
 
-## ⚙️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |-------|-------------|
@@ -30,7 +30,7 @@ Simulate a **small online shop workflow**, including:
 
 ---
 
-## 🧩 Project Structure (Simplified)
+## Project Structure (Simplified)
 
 ```bash
 springmall/
@@ -78,12 +78,12 @@ springmall/
     └─ OrderResponse.java
 ```
 
-> ✅ Controllers → Services → Repositories → Entities  
+> Controllers → Services → Repositories → Entities  
 > Clear separation of responsibilities following the MVC architecture.
 
 ---
 
-## 🔑 Core APIs
+## Core APIs
 
 | **Module** | **Endpoint** | **Action** |
 |-------------|---------------|------------|
@@ -99,103 +99,7 @@ springmall/
 | **Order** | `GET /api/orders` | View user’s order history |
 | **Admin** | `GET /api/admin/orders` | View all orders (admin only) |
 
-> 🧭 Workflow: Register → Login → Browse Products → Add to Cart → Place Order → View Orders  
-> 👑 Admin can view and manage all customer orders.
+> Workflow: Register → Login → Browse Products → Add to Cart → Place Order → View Orders  
+> Admin can view and manage all customer orders.
 
 ---
-
-## 🧰 Setup & Run
-
-### 1️⃣ Clone Repository
-```bash
-git clone https://github.com/beg7520-prog/springmall.git
-cd springmall
-```
-
-2️⃣ Configure Database (MySQL)
-
-```bash
-CREATE DATABASE spring-mall;
-
-Update application.properties:
-
-spring.datasource.url=jdbc:mysql://localhost:3306/spring-mall
-spring.datasource.username=root
-spring.datasource.password=yourpassword
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-```
-
-3️⃣ Run Application
-
-```bash
-mvn spring-boot:run
-```
-
-4️⃣ Access Endpoints
-
-```bash
-Default base URL:
-
-http://localhost:8080/api
-```
-
-⸻
-
-🧪 Testing
-
-```bash
-The project includes MockMvc tests for major controllers:
-
-Test Class	Purpose
-AuthControllerTest	Register & login tests
-CartControllerTest	Add/update/delete cart item
-OrderControllerTest	Place order & fetch history
-AdminControllerTest	Verify admin privileges
-
-Run all tests:
-
-mvn test
-```
-
-⸻
-
-☁️ Deployment (Optional)
-
-```bash
-You can deploy to any free platform:
-	•	🟢 Render — easiest way to host Spring Boot apps
-	•	🟣 Railway — supports MySQL + Java
-	•	🟠 Koyeb — lightweight app deployment
-	•	🐳 Docker — containerized deployment with MySQL
-```
-
-⸻
-
-📘 ER Diagram
-
-```bash
-User (id, username, password, role)
-Product (id, name, price, description)
-CartItem (id, user_id, product_id, quantity)
-Order (id, user_id, total, created_at)
-OrderItem (id, order_id, product_id, quantity, subtotal)
-```
-
-⸻
-
-👤 Author
-
-```bash
-Created by Nianci
-💻 Java Developer | Backend Enthusiast
-📫 GitHub
-```
-
-⸻
-
-🪪 License
-
-```bash
-This project is released under the MIT License.
-```
