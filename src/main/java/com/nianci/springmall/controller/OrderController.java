@@ -1,5 +1,6 @@
 package com.nianci.springmall.controller;
 
+import com.nianci.springmall.dto.CartItemRequest;
 import com.nianci.springmall.dto.OrderResponse;
 import com.nianci.springmall.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,14 @@ public class OrderController {
     public ResponseEntity<List<OrderResponse>> getOrders(@AuthenticationPrincipal String username) {
         List<OrderResponse> orders = orderService.getOrders(username);
         return ResponseEntity.ok(orders);
+    }
+
+    @PostMapping("/cart")
+    public ResponseEntity<OrderResponse> placeOrderWithCart(
+            @AuthenticationPrincipal String username,
+            @RequestBody List<CartItemRequest> cartItems) {
+
+        OrderResponse order = orderService.placeOrderWithCart(username, cartItems);
+        return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 }
